@@ -1,6 +1,6 @@
 {
   "packages": [
-    "@fuf/packages/*"
+    "packages/@fuf/*"
   ],
   "version": "1.0.0"
 }

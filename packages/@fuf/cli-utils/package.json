@@ -8,13 +8,24 @@
     "utils"
   ],
   "author": "hakuna-tata <610578197@qq.com>",
-  "homepage": "",
+  "homepage": "https://github.com/hakuna-tata/fuf-cli#readme",
   "license": "ISC",
   "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
   "files": [
     "lib"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hakuna-tata/fuf-cli.git"
+  },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/hakuna-tata/fuf-cli/issues"
   }
 }

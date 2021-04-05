@@ -1,0 +1,20 @@
+{
+  "name": "@fuf/cli-utils",
+  "version": "1.0.0",
+  "description": "utils for fuf-cli packages",
+  "keywords": [
+    "fuf",
+    "cli",
+    "utils"
+  ],
+  "author": "hakuna-tata <610578197@qq.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}

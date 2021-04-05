@@ -1,0 +1,22 @@
+{
+  "name": "@fuf/cli",
+  "version": "1.0.0",
+  "description": "Command line interface for fuf-cli development",
+  "keywords": [
+    "fuf",
+    "cli"
+  ],
+  "author": "hakuna-tata <610578197@qq.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+      "@fuf/cli-utils": "^1.0.0"
+  }
+}

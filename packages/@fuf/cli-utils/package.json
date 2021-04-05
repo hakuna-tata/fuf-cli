@@ -27,5 +27,8 @@
   },
   "bugs": {
     "url": "https://github.com/hakuna-tata/fuf-cli/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

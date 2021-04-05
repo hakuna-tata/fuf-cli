@@ -1,6 +1,6 @@
 {
   "name": "@fuf/cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Command line interface for fuf-cli development",
   "keywords": [
     "fuf",
@@ -28,6 +28,6 @@
     "url": "https://github.com/hakuna-tata/fuf-cli/issues"
   },
   "publishConfig": {
-      "access": "public"
+    "access": "public"
   }
 }

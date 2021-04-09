@@ -1,7 +1,8 @@
-'use strict';
+function cli() {
+    try {
+
+    } catch(e) {}
+}
+
 
 module.exports = cli;
-
-function cli() {
-    // TODO
-}

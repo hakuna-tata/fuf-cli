@@ -2,6 +2,9 @@
   "name": "@fuf/cli",
   "version": "1.0.1",
   "description": "Command line interface for fuf-cli development",
+  "bin": {
+    "fuf": "bin/fuf.js"
+  },
   "keywords": [
     "fuf",
     "cli"
@@ -22,5 +25,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "is-installed-globally": "^0.4.0",
+    "update-notifier": "^5.1.0"
   }
 }

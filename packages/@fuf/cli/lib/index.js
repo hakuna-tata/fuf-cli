@@ -4,5 +4,4 @@ function cli() {
     } catch(e) {}
 }
 
-
 module.exports = cli;

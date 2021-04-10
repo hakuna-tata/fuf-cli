@@ -8,12 +8,10 @@ const checkPkgVersion = () => {
     pkg,
     updateCheckInterval: 1000 * 60 * 60
   }).notify({
-    defer: false,
-    message: `Update available
-      ${chalk.dim('{currentVersion}')}
-      ${chalk.reset(' → ')} ${chalk.green('{latestVersion}')}
-      Run ${chalk.cyan(`npm i ${isInstallGloabally ? '-g' : ''}${pkg.name}`)}
-      to update`,
+    defer: true,
+    // eslint-disable-next-line max-len
+    message: `Update available ${chalk.dim('{currentVersion}')} ${chalk.reset(' → ')} ${chalk.green('{latestVersion}')}
+Run ${chalk.cyan(`npm i ${isInstallGloabally ? '-g' : ''}${pkg.name}`)} to update`,
   });
 };
 

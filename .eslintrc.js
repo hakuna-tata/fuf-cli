@@ -16,7 +16,7 @@ module.exports = {
       "no-var": 2,
       "semi": [2, "always"],
       "quotes": [2, 'single'],
-      "max-len": [2, 80],
+      "max-len": [2, 100],
       "key-spacing": [2, { beforeColon: false, afterColon: true }],
       "space-infix-ops": 2,
       "eqeqeq": 2,

@@ -1,7 +1,9 @@
-function cli() {
-    try {
+const checkPkgVersion = require('./checkPkgVersion');
 
-    } catch(e) {}
+function cli() {
+  try {
+    checkPkgVersion();
+  } catch (e) { }
 }
 
 module.exports = cli;

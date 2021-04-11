@@ -27,8 +27,10 @@
     "access": "public"
   },
   "dependencies": {
+    "@fuf/cli-utils": "file:../cli-utils",
     "chalk": "^4.1.0",
     "is-installed-globally": "^0.4.0",
+    "semver": "^7.3.5",
     "update-notifier": "^5.1.0"
   }
 }

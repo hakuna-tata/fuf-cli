@@ -10,7 +10,7 @@
   "author": "hakuna-tata <610578197@qq.com>",
   "homepage": "https://github.com/hakuna-tata/fuf-cli#readme",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "index.js",
   "files": [
     "lib"
   ],
@@ -23,5 +23,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0"
   }
 }

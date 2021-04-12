@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "Command line interface for fuf-cli development",
   "bin": {
-    "fuf": "bin/fuf.js"
+    "fuf": "bin/fuf"
   },
   "keywords": [
     "fuf",
@@ -30,6 +30,7 @@
     "@fuf/cli-utils": "file:../cli-utils",
     "chalk": "^4.1.0",
     "is-installed-globally": "^0.4.0",
+    "minimist": "^1.2.5",
     "semver": "^7.3.5",
     "update-notifier": "^5.1.0"
   }

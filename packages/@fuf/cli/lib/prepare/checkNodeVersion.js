@@ -1,5 +1,6 @@
 const { Logger } = require('@fuf/cli-utils');
 const semver = require('semver');
+
 const LOWEST_NODE_VERSION = '8.0.0';
 
 const checkNodeVersion = (cur) => {

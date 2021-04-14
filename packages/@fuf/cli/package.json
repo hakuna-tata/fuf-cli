@@ -29,6 +29,7 @@
   "dependencies": {
     "@fuf/cli-utils": "file:../cli-utils",
     "chalk": "^4.1.0",
+    "commander": "^7.2.0",
     "dotenv": "^8.2.0",
     "is-installed-globally": "^0.4.0",
     "minimist": "^1.2.5",

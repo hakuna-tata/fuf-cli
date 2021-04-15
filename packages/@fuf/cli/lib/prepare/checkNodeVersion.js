@@ -1,11 +1,10 @@
 const { Logger } = require('@fuf/cli-utils');
 const semver = require('semver');
-
-const LOWEST_NODE_VERSION = '8.0.0';
+const reqVersion = require('../../package.json').engines.node;
 
 const checkNodeVersion = (cur) => {
-  if (!semver.gte(cur, LOWEST_NODE_VERSION)) {
-    Logger.error(`fuf-cli 需要安装 v${LOWEST_NODE_VERSION} 以上版本的 Node.js`);
+  if (!semver.satisfies(cur, reqVersion)) {
+    Logger.error(`fuf-cli 需要安装 v${reqVersion} 以上版本的 Node.js`);
     process.exit(1);
   }
 };

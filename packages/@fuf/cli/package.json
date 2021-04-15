@@ -10,7 +10,7 @@
     "cli"
   ],
   "author": "hakuna-tata <610578197@qq.com>",
-  "homepage": "https://github.com/hakuna-tata/fuf-cli#readme",
+  "homepage": "https://github.com/hakuna-tata/fuf-cli",
   "license": "MIT",
   "main": "lib/index.js",
   "files": [
@@ -31,9 +31,13 @@
     "chalk": "^4.1.0",
     "commander": "^7.2.0",
     "dotenv": "^8.2.0",
+    "figlet": "^1.5.0",
     "is-installed-globally": "^0.4.0",
     "minimist": "^1.2.5",
     "semver": "^7.3.5",
     "update-notifier": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=8.0"
   }
 }

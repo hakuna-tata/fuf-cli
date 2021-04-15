@@ -3,7 +3,7 @@ const os = require('os');
 const checkNodeVersion = require('./prepare/checkNodeVersion');
 const checkPkgVersion = require('./prepare/checkPkgVersion');
 const checkEnv = require('./prepare/checkEnv');
-const Commander = require('./commander');
+const Command = require('./command');
 
 const prepare = () => {
   checkNodeVersion(process.version);
@@ -14,7 +14,7 @@ const prepare = () => {
 function cli() {
   prepare();
 
-  new Commander().register();
+  new Command().register(process.argv);
 }
 
 module.exports = cli;

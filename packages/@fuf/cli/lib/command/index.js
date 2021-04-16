@@ -4,8 +4,6 @@ const program = require('commander');
 const { Logger } = require('@fuf/cli-utils');
 const pkg = require('../../package.json');
 
-const create = require('./action/create');
-
 const NO_COMMAND_ARGS_LENGTH = 2;
 
 class Command {
@@ -44,7 +42,7 @@ class Command {
       .command('create <appname>')
       .description('create a new project powered by @fuf/cli service')
       .option('-f, --force', 'Overwrite target directory if it exists')
-      .action(create);
+      .action(() => {});
 
     program.on('command:*', ([cmd]) => {
       program.outputHelp();

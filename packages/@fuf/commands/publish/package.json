@@ -1,0 +1,24 @@
+{
+  "name": "@fuf/cli-publish-command",
+  "version": "1.0.1",
+  "description": "publish command for fuf-cli package",
+  "keywords": [
+    "publish",
+    "cli",
+    "fuf"
+  ],
+  "author": "hakuna-tata <610578197@qq.com>",
+  "homepage": "https://github.com/hakuna-tata/fuf-cli#readme",
+  "license": "MIT",
+  "main": "lib/publish.js",
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hakuna-tata/fuf-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hakuna-tata/fuf-cli/issues"
+  }
+}

@@ -1,10 +1,12 @@
-const program = require('commander');
 const figlet = require('figlet');
+const chalk = require('chalk');
+const program = require('commander');
 const { Logger } = require('@fuf/cli-utils');
 const pkg = require('../../package.json');
 
-const NO_COMMAND_ARGS_LENGTH = 2;
+const create = require('./action/create');
 
+const NO_COMMAND_ARGS_LENGTH = 2;
 
 class Command {
   register(args) {
@@ -13,11 +15,7 @@ class Command {
       return;
     }
 
-    program
-      .version(pkg.version)
-      .usage('<command> [options]');
-
-    program.parse(args);
+    this.registerCommand(args);
   }
 
   printCliBanner() {
@@ -35,6 +33,26 @@ class Command {
         Logger.log('Run fuf --help(-h) to see usage');
       }
     );
+  }
+
+  registerCommand(args) {
+    program
+      .usage('<command> [options]')
+      .version(pkg.version);
+
+    program
+      .command('create <appname>')
+      .description('create a new project powered by @fuf/cli service')
+      .option('-f, --force', 'Overwrite target directory if it exists')
+      .action(create);
+
+    program.on('command:*', ([cmd]) => {
+      program.outputHelp();
+      Logger.error(`Unknown command ${chalk.yellow(cmd)}`);
+      process.exitCode = 1;
+    });
+
+    program.parse(args);
   }
 }
 

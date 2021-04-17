@@ -1,11 +1,11 @@
-# `publish`
+# `add`
 
 > TODO: description
 
 ## Usage
 
 ```
-const publish = require('publish');
+const add = require('add');
 
 // TODO: DEMONSTRATE API
 ```

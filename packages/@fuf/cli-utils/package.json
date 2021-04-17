@@ -25,7 +25,6 @@
     "access": "public"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
-    "npminstall": "^4.11.0"
+    "chalk": "^4.1.0"
   }
 }

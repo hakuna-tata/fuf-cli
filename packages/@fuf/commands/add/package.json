@@ -1,16 +1,16 @@
 {
-  "name": "@fuf/cli-publish-command",
+  "name": "@fuf/cli-add-command",
   "version": "1.0.1",
-  "description": "publish command for fuf-cli package",
+  "description": "add command for fuf-cli package",
   "keywords": [
-    "publish",
+    "add",
     "cli",
     "fuf"
   ],
   "author": "hakuna-tata <610578197@qq.com>",
   "homepage": "https://github.com/hakuna-tata/fuf-cli#readme",
   "license": "MIT",
-  "main": "lib/publish.js",
+  "main": "lib/index.js",
   "files": [
     "lib"
   ],

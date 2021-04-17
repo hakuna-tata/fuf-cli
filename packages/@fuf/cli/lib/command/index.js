@@ -3,17 +3,20 @@ const os = require('os');
 const figlet = require('figlet');
 const chalk = require('chalk');
 const program = require('commander');
-const { Constant, File, Logger, Package } = require('@fuf/cli-utils');
+const Package = require('./package');
+const { Constant, File, Logger } = require('@fuf/cli-utils');
 const pkg = require('../../package.json');
 
 const NO_COMMAND_ARGS_LENGTH = 2;
 
-const actions = (name, opts, cmd) => {
+const actions = async (opts, cmd) => {
   const cacheRoot = path.join(os.homedir(), Constant.FUF_ROOT);
 
   if (File.isDirExist(cacheRoot)) {
-    const pkg = new Package(name, opts, cmd.name(), cacheRoot);
-    pkg.getPkgEntry();
+    const pkg = new Package(cmd.name(), cacheRoot);
+    const entryFile = await pkg.getPkgEntry();
+
+    Logger.log(entryFile);
   } else {
     Logger.error(`${cacheRoot} is not exist`);
   }
@@ -38,7 +41,7 @@ class Command {
         verticalLayout: 'default'
       },
       function(err, data) {
-        if (err) {}
+        if (err) process.exit(1);
         Logger.log(data);
         Logger.log(`current version: v${pkg.version}, homepage: ${pkg.homepage}`);
         Logger.log('Run fuf --help(-h) to see usage');
@@ -56,22 +59,25 @@ class Command {
       .description('create a new project powered by @fuf/cli service')
       .option('-f, --force', 'Overwrite target directory if it exists')
       .action((name, options, cmd) => {
-        actions(name, options, cmd);
+        actions(options, cmd, name);
       });
 
     program
-      .command('add <plugin> [pluginOptions]')
-      .description('install a plugin')
-      .option('--registry <path>', 'install dependencies(local file path or npm packages name)')
-      .action((name, optionals, options, cmd) => {
-        actions(name, options, cmd);
+      .command('add')
+      .description('add a plugin')
+      .option('--plugin <pluginName>', 'add plugin(npm)')
+      .option('--path <path>', 'add plugin(for local file)')
+      .action((options, cmd) => {
+        actions(options, cmd);
       });
 
     program
-      .command('remove <plugin> [pluginOptions]')
+      .command('remove')
       .description('remove a plugin')
-      .action((name, optionals, options, cmd) => {
-        actions(name, options, cmd);
+      .option('--plugin <pluginName>', 'remove plugin(for npm)')
+      .option('--path <path>', 'remove plugin(for local file)')
+      .action((options, cmd) => {
+        actions(options, cmd);
       });
 
     program.on('command:*', ([cmd]) => {

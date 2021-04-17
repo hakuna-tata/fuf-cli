@@ -10,16 +10,26 @@ const pkg = require('../../package.json');
 const NO_COMMAND_ARGS_LENGTH = 2;
 
 const actions = async (opts, cmd) => {
+  let entryFile = null;
   const cacheRoot = path.join(os.homedir(), Constant.FUF_ROOT);
+  const { debugPath = ''} = opts;
 
-  if (File.isDirExist(cacheRoot)) {
-    const pkg = new Package(cmd.name(), cacheRoot);
-    const entryFile = await pkg.getPkgEntry();
-
-    Logger.log(entryFile);
+  if (debugPath) {
+    if (File.isDirExist(debugPath)) {
+      entryFile = path.join(debugPath, File.parseEntryFile(debugPath));
+    } else {
+      Logger.error(`${debugPath} is not exist`);
+    }
   } else {
-    Logger.error(`${cacheRoot} is not exist`);
+    if (File.isDirExist(cacheRoot)) {
+      const pkg = new Package(cmd.name(), cacheRoot);
+      entryFile = await pkg.getPkgEntry();
+    } else {
+      Logger.error(`${cacheRoot} is not exist`);
+    }
   }
+
+  Logger.log(entryFile);
 };
 
 class Command {
@@ -57,6 +67,7 @@ class Command {
     program
       .command('create <appname>')
       .description('create a new project powered by @fuf/cli service')
+      .option('--debugPath <debugPath>', 'manually specify the create package path')
       .option('-f, --force', 'Overwrite target directory if it exists')
       .action((name, options, cmd) => {
         actions(options, cmd, name);
@@ -65,6 +76,7 @@ class Command {
     program
       .command('add')
       .description('add a plugin')
+      .option('--debugPath <debugPath>', 'manually specify the addd package path')
       .option('--plugin <pluginName>', 'add plugin(npm)')
       .option('--path <path>', 'add plugin(for local file)')
       .action((options, cmd) => {

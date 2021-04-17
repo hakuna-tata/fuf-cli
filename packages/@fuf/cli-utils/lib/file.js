@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 // 保证文件一定存在，文件不存在则创建文件
 const fileExist = (filePath) => {
@@ -14,7 +15,13 @@ const isDirExist = (filePath) => {
   return stat && stat.isDirectory();
 };
 
+const parseEntryFile = (pkgPath) => {
+    const jsonFile = path.join(pkgPath, 'package.json');
+    return fs.existsSync(jsonFile) ? require(jsonFile).main : '';
+};
+
 module.exports = {
   fileExist,
-  isDirExist
+  isDirExist,
+  parseEntryFile
 };

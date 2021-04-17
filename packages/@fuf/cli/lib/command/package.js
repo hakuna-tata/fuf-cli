@@ -3,7 +3,7 @@ const fs = require('fs');
 const axios = require('axios');
 const npminstall = require('npminstall');
 const semver = require('semver');
-const { Logger } = require('@fuf/cli-utils');
+const { File, Logger } = require('@fuf/cli-utils');
 const pkg = require('../../package.json');
 
 const NPM_URL = 'https://registry.npmjs.org';
@@ -56,10 +56,8 @@ class Package {
 
     try {
       const calcPkgPath = this.pkgPath(this.pkgVersion, this.pkgName);
-      const pkgJsonPath = path.join(calcPkgPath, 'package.json');
-      const pkgMain = require(pkgJsonPath).main || '';
 
-      return path.join(calcPkgPath, pkgMain);
+      return path.join(calcPkgPath, File.parseEntryFile(calcPkgPath));
     } catch(_) {
       return null;
     }
@@ -74,6 +72,7 @@ class Package {
     }
 
     if (latestVersion && semver.gt(latestVersion, this.pkgVersion)) {
+      this.pkgVersion = latestVersion;
       Logger.log('Success：命令插件自动更新');
 
       return npminstall({

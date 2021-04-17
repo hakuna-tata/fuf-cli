@@ -1,16 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const doeEnv = require('dotenv');
-const { Constant, Logger } = require('@fuf/cli-utils');
-
-// 保证文件一定存在，文件不存在则创建文件
-const fileExist = (filePath) => {
-  try {
-    fs.readFileSync(filePath, 'utf-8');
-  } catch (_) {
-    fs.appendFileSync(filePath, '', 'utf-8');
-  }
-};
+const { File, Constant, Logger } = require('@fuf/cli-utils');
 
 const checkFuf = (homePath) => {
   if (!homePath) {
@@ -25,10 +16,10 @@ const checkFuf = (homePath) => {
       fs.unlinkSync(root);
       fs.mkdirSync(root);
     }
-    fileExist(path.join(root, Constant.FUF_ENV));
+    File.fileExist(path.join(root, Constant.FUF_ENV));
   } catch (e) {
     fs.mkdirSync(root);
-    fileExist(path.join(root, Constant.FUF_ENV));
+    File.fileExist(path.join(root, Constant.FUF_ENV));
   }
 };
 

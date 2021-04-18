@@ -28,7 +28,7 @@ const parseEntryFile = (pkgPath) => {
     return fs.existsSync(jsonFile) ? require(jsonFile).main : '';
 };
 
-// wondows 文件路径问题
+// windows 文件路径问题
 const formatFilePath = (filePath) => {
   const sep = path.sep;
     if (sep === '/') {

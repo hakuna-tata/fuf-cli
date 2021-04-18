@@ -54,7 +54,7 @@ const actions = async (opts, cmd, name) => {
       process.exit(code || 0);
     });
 
-  }else {
+  } else {
     Logger.error(`entryFile：${entryFile} is not exist`);
   }
 };
@@ -96,26 +96,24 @@ class Command {
       .description('create a new project powered by @fuf/cli service')
       .option('--debugPath <debugPath>', 'manually specify the create package path')
       .option('-f, --force', 'Overwrite target directory if it exists')
-      .action((app, options, cmd) => {
-        actions(options, cmd, app);
+      .action((appName, options, cmd) => {
+        actions(options, cmd, appName);
       });
 
     program
-      .command('add [pluginName]')
+      .command('add <pluginName>')
       .description('add a plugin')
-      .option('--debugPath <debugPath>', 'manually specify the addd package path')
-      .option('--path <path>', 'add plugin(for local file)')
-      .action((plugin = '', options, cmd) => {
-        actions(options, cmd, plugin);
+      .option('--debugPath <debugPath>', 'manually specify the add package path')
+      .action((pluginName, options, cmd) => {
+        actions(options, cmd, pluginName);
       });
 
     program
-      .command('remove [pluginName]')
+      .command('remove <pluginName>')
       .description('remove a plugin')
       .option('--debugPath <debugPath>', 'manually specify the remove package path')
-      .option('--path <path>', 'remove plugin(for local file)')
-      .action((plugin = '', options, cmd) => {
-        actions(options, cmd, plugin);
+      .action((pluginName, options, cmd) => {
+        actions(options, cmd, pluginName);
       });
 
     program.on('command:*', ([cmd]) => {

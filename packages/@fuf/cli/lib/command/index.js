@@ -1,5 +1,7 @@
 const path = require('path');
+const fs = require('fs');
 const os = require('os');
+const { spawn } = require('child_process');
 const figlet = require('figlet');
 const chalk = require('chalk');
 const program = require('commander');
@@ -9,7 +11,7 @@ const pkg = require('../../package.json');
 
 const NO_COMMAND_ARGS_LENGTH = 2;
 
-const actions = async (opts, cmd) => {
+const actions = async (opts, cmd, name) => {
   let entryFile = null;
   const cacheRoot = path.join(os.homedir(), Constant.FUF_ROOT);
   const { debugPath = ''} = opts;
@@ -19,6 +21,7 @@ const actions = async (opts, cmd) => {
       entryFile = path.join(debugPath, File.parseEntryFile(debugPath));
     } else {
       Logger.error(`${debugPath} is not exist`);
+      process.exit(1);
     }
   } else {
     if (File.isDirExist(cacheRoot)) {
@@ -26,10 +29,34 @@ const actions = async (opts, cmd) => {
       entryFile = await pkg.getPkgEntry();
     } else {
       Logger.error(`${cacheRoot} is not exist`);
+      process.exit(1);
     }
   }
 
-  Logger.log(entryFile);
+
+  if (fs.existsSync(entryFile)) {
+    // Logger.log(`${entryFile}`);
+    const formatPath = File.formatFilePath(entryFile);
+    const config = Object.assign(opts, { name });
+    const code = `require('${formatPath}')(${JSON.stringify(config)})`;
+
+    const cp = spawn('node', ['-e', code], {
+      stdio: 'inherit',
+    });
+
+    cp.on('error', (e) => {
+      Logger.error(`${e.message}`);
+      process.exit(1);
+    });
+
+    cp.on('exit', (code) => {
+      Logger.log(`command invoke sunccess: ${code}`);
+      process.exit(code || 0);
+    });
+
+  }else {
+    Logger.error(`entryFile：${entryFile} is not exist`);
+  }
 };
 
 class Command {
@@ -65,31 +92,30 @@ class Command {
       .version(pkg.version);
 
     program
-      .command('create <appname>')
+      .command('create <appName>')
       .description('create a new project powered by @fuf/cli service')
       .option('--debugPath <debugPath>', 'manually specify the create package path')
       .option('-f, --force', 'Overwrite target directory if it exists')
-      .action((name, options, cmd) => {
-        actions(options, cmd, name);
+      .action((app, options, cmd) => {
+        actions(options, cmd, app);
       });
 
     program
-      .command('add')
+      .command('add [pluginName]')
       .description('add a plugin')
       .option('--debugPath <debugPath>', 'manually specify the addd package path')
-      .option('--plugin <pluginName>', 'add plugin(npm)')
       .option('--path <path>', 'add plugin(for local file)')
-      .action((options, cmd) => {
-        actions(options, cmd);
+      .action((plugin = '', options, cmd) => {
+        actions(options, cmd, plugin);
       });
 
     program
-      .command('remove')
+      .command('remove [pluginName]')
       .description('remove a plugin')
-      .option('--plugin <pluginName>', 'remove plugin(for npm)')
+      .option('--debugPath <debugPath>', 'manually specify the remove package path')
       .option('--path <path>', 'remove plugin(for local file)')
-      .action((options, cmd) => {
-        actions(options, cmd);
+      .action((plugin = '', options, cmd) => {
+        actions(options, cmd, plugin);
       });
 
     program.on('command:*', ([cmd]) => {

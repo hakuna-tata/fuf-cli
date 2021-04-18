@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = create;
-
-function create() {
-    // TODO
+function create(options) {
+  console.log(options);
 }
+
+module.exports = create;

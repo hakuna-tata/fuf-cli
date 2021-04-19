@@ -2,8 +2,8 @@ class Hook {
   constructor() {
     this.listeners = [];
   }
-
-  on(listener) {
+ 
+  push(listener) {
     if (typeof listener !== 'function') {
       throw new Error('listener must be function');
     }
@@ -13,13 +13,9 @@ class Hook {
     return this;
   }
 
-  emit() {
-    this.next();
-  }
-
-  next() {
+  async next() {
     const task = this.listeners.shift();
-    task && task();
+    task && await task();
   }
 }
 

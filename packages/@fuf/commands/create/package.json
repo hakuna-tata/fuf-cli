@@ -25,6 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "inquirer": "^8.0.0"
+    "@fuf/cli-utils": "file:../../cli-utils",
+    "fs-extra": "^9.1.0"
   }
 }

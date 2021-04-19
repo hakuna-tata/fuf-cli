@@ -3,8 +3,9 @@ const fs = require('fs');
 const axios = require('axios');
 const npminstall = require('npminstall');
 const semver = require('semver');
-const { File, Logger } = require('@fuf/cli-utils');
-const pkg = require('../../package.json');
+const File = require('./file');
+const Logger = require('./logger');
+const pkg = require('../package.json');
 
 const NPM_URL = 'https://registry.npmjs.org';
 
@@ -15,9 +16,9 @@ const INTERNAL_COMMAND = {
 };
 
 class Package {
-  constructor(cmdName, cacheRoot) {
+  constructor(pkgName, cacheRoot) {
     this.cacheRoot = cacheRoot;
-    this.pkgName = INTERNAL_COMMAND[cmdName];
+    this.pkgName = INTERNAL_COMMAND[pkgName] || pkgName;
     this.pkgVersion = pkg.version;
   }
 

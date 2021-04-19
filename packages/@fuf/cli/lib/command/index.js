@@ -5,8 +5,7 @@ const { spawn } = require('child_process');
 const figlet = require('figlet');
 const chalk = require('chalk');
 const program = require('commander');
-const Package = require('./package');
-const { Constant, File, Logger } = require('@fuf/cli-utils');
+const { Constant, File, Logger, Package } = require('@fuf/cli-utils');
 const pkg = require('../../package.json');
 
 const NO_COMMAND_ARGS_LENGTH = 2;
@@ -94,7 +93,8 @@ class Command {
     program
       .command('create <appName>')
       .description('create a new project powered by @fuf/cli service')
-      .option('--debugPath <debugPath>', 'manually specify the create package path')
+      .option('--npmPkg <npmPkg>', 'manually specify the create package of npm Pkg')
+      .option('--debugPath <debugPath>', 'manually specify the create package of local file')
       .option('-f, --force', 'Overwrite target directory if it exists')
       .action((appName, options, cmd) => {
         actions(options, cmd, appName);

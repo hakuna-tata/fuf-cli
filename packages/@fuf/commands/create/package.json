@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@fuf/cli-utils": "file:../../cli-utils",
-    "fs-extra": "^9.1.0"
+    "fs-extra": "^9.1.0",
+    "inquirer": "^8.0.0"
   }
 }

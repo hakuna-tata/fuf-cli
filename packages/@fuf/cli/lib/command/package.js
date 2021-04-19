@@ -15,9 +15,9 @@ const INTERNAL_COMMAND = {
 };
 
 class Package {
-  constructor(cmdName, cacheRoot) {
+  constructor(pkgName, cacheRoot) {
     this.cacheRoot = cacheRoot;
-    this.pkgName = INTERNAL_COMMAND[cmdName];
+    this.pkgName = INTERNAL_COMMAND[pkgName] || pkgName;
     this.pkgVersion = pkg.version;
   }
 

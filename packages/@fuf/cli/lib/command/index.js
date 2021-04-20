@@ -5,8 +5,7 @@ const { spawn } = require('child_process');
 const figlet = require('figlet');
 const chalk = require('chalk');
 const program = require('commander');
-const Package = require('./package');
-const { Constant, File, Logger } = require('@fuf/cli-utils');
+const { Constant, File, Logger, Package } = require('@fuf/cli-utils');
 const pkg = require('../../package.json');
 
 const NO_COMMAND_ARGS_LENGTH = 2;

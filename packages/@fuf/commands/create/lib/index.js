@@ -2,21 +2,32 @@ const path = require('path');
 const os = require('os');
 const fse = require('fs-extra');
 const inquirer = require('inquirer');
-const { Constant, File, Logger } = require('@fuf/cli-utils');
+const { Constant, File } = require('@fuf/cli-utils');
 const Hook = require('./hook');
 
 const EXIST_TPL = [
   {
     value: '@fuf/cli-template-vue2',
-    name: 'Vue2 模板'
+    name: 'Vue2 模板',
   },
   {
     value: '@fuf/cli-template-node',
-    name: 'Node 模板'
+    name: 'Node 模板',
   },
   {
     value: '@fuf/cli-template-react',
-    name: 'React 模板 (正在迭代中......)'
+    name: 'React 模板 (正在开发中......)',
+  }
+];
+
+const SUPPORT_LANG = [
+  {
+    value: 'js',
+    name: 'JavaScript',
+  },
+  {
+    value: 'ts',
+    name: 'TypeScript',
   }
 ];
 
@@ -30,7 +41,7 @@ class createCommand extends Hook {
 
     this.push(this.checkDir.bind(this))
         .push(this.choiceTemplate.bind(this))
-        .push(this.downLoadTmp.bind(this));
+        .push(this.downLoadTemplate.bind(this));
 
     this.next();
   }
@@ -61,14 +72,27 @@ class createCommand extends Hook {
   }
 
   async choiceTemplate() {
-    const result = await inquirer.prompt({
+    const { template } = await inquirer.prompt({
       type: 'list',
       name: 'template',
       message: '请选择项目模板',
       choices: EXIST_TPL,
       default: 0
     });
-    Logger.log(result);
+
+    const { language } = await inquirer.prompt({
+      type: 'list',
+      name: 'language',
+      message: '请选择语言',
+      choices: SUPPORT_LANG,
+      default: 0
+    });
+
+    this.next({ template, language });
+  }
+
+  downLoadTemplate(choices) {
+    console.log(choices);
   }
 
   downLoadTmp() {}

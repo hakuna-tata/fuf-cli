@@ -25,7 +25,10 @@
     "access": "public"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "chalk": "^4.1.0",
-    "inquirer": "^8.0.0"
+    "inquirer": "^8.0.0",
+    "npminstall": "^4.11.0",
+    "semver": "^7.3.5"
   }
 }

@@ -15,7 +15,7 @@ class Hook {
 
   async next() {
     const task = this.listeners.shift();
-    task && await task();
+    task && await task(...arguments);
   }
 }
 

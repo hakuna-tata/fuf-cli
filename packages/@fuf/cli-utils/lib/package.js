@@ -22,10 +22,6 @@ class Package {
     this.pkgVersion = pkg.version;
   }
 
-  pkgExist(version, name) {
-    return fs.existsSync(this.pkgPath(version, name));
-  }
-
   pkgPath(version, name) {
     return path.join(this.cacheRoot, 'node_modules',
       this.prefixPkgName(version, name)
@@ -38,6 +34,10 @@ class Package {
     return `_${parseName}@${version}@${name}`;
   }
 
+  isPkgExist(version, name) {
+    return fs.existsSync(this.pkgPath(version, name));
+  }
+
   async getPkgLatestVersion(url) {
     return axios.get(url).then((res) => {
       if (res.status === 200) {
@@ -48,12 +48,16 @@ class Package {
     });
   }
 
-  async getPkgEntry() {
-    if (this.pkgExist(this.pkgVersion, this.pkgName)) {
+  async checkPkg() {
+    if (this.isPkgExist(this.pkgVersion, this.pkgName)) {
       await this.pkgUpdate();
     } else {
       await this.pkgInstall();
     }
+  }
+
+  async getPkgEntryPath() {
+    await this.checkPkg();
 
     try {
       const calcPkgPath = this.pkgPath(this.pkgVersion, this.pkgName);
@@ -67,7 +71,7 @@ class Package {
   async pkgUpdate() {
     const latestVersion = await this.getPkgLatestVersion(`${NPM_URL}/${this.pkgName}`);
 
-    if (this.pkgExist(latestVersion, this.pkgName)) {
+    if (this.isPkgExist(latestVersion, this.pkgName)) {
       this.pkgVersion = latestVersion;
       return;
     }
@@ -84,6 +88,7 @@ class Package {
         }]
       }).catch((err) => {
         Logger.error(err);
+        process.exit(1);
       });
     }
   }
@@ -97,6 +102,7 @@ class Package {
       }]
     }).catch((err) => {
       Logger.error(err);
+      process.exit(1);
     });
   }
 }

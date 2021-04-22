@@ -24,8 +24,8 @@ const actions = async (opts, cmd, name) => {
     }
   } else {
     if (File.isDirExist(cacheRoot)) {
-      const pkg = new Package(cmd.name(), cacheRoot);
-      entryFile = await pkg.getPkgEntry();
+      const pkgInstance = new Package(cmd.name(), cacheRoot);
+      entryFile = await pkgInstance.getPkgEntryPath();
     } else {
       Logger.error(`${cacheRoot} is not exist`);
       process.exit(1);

@@ -2,7 +2,7 @@ const path = require('path');
 const os = require('os');
 const fse = require('fs-extra');
 const inquirer = require('inquirer');
-const { Constant, File } = require('@fuf/cli-utils');
+const { Constant, File, Logger, Package } = require('@fuf/cli-utils');
 const Hook = require('./hook');
 
 const EXIST_TPL = [
@@ -41,7 +41,8 @@ class createCommand extends Hook {
 
     this.push(this.checkDir.bind(this))
         .push(this.choiceTemplate.bind(this))
-        .push(this.downLoadTemplate.bind(this));
+        .push(this.downLoadTemplate.bind(this))
+        .push(this.copyTemplat2CurDir.bind(this));
 
     this.next();
   }
@@ -91,11 +92,23 @@ class createCommand extends Hook {
     this.next({ template, language });
   }
 
-  downLoadTemplate(choices) {
-    console.log(choices);
+  async downLoadTemplate(choices) {
+    const { template } = choices;
+    if (File.isDirExist(this.cacheRoot)) {
+      const pkgInstance = new Package(template, this.cacheRoot);
+
+      await pkgInstance.checkPkg();
+
+      this.next();
+    } else {
+      Logger.error(`${this.cacheRoot} is not exist`);
+      process.exit(1);
+    }
   }
 
-  downLoadTmp() {}
+  copyTemplat2CurDir() {
+    console.log('copy');
+  }
 
 }
 

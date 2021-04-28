@@ -108,14 +108,6 @@ class Command {
         actions(options, cmd, pluginName);
       });
 
-    program
-      .command('remove <pluginName>')
-      .description('remove a plugin')
-      .option('--debugPath <debugPath>', 'manually specify the remove package path')
-      .action((pluginName, options, cmd) => {
-        actions(options, cmd, pluginName);
-      });
-
     program.on('command:*', ([cmd]) => {
       program.outputHelp();
       Logger.error(`Unknown command ${chalk.yellow(cmd)}`);

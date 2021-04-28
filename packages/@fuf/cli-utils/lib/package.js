@@ -5,21 +5,37 @@ const npminstall = require('npminstall');
 const semver = require('semver');
 const File = require('./file');
 const Logger = require('./logger');
-const pkg = require('../package.json');
+const Constant = require('./constant');
 
 const NPM_URL = 'https://registry.npmjs.org';
 
-const INTERNAL_COMMAND = {
-  create: '@fuf/cli-create-command',
-  add: '@fuf/cli-add-command',
-  remove: '@fuf/cli-remove-command',
+const readFufConfig = (filePath) => {
+  if(!fs.existsSync(filePath)) {
+    Logger.error(`配置文件 ${Constant.FUF_CONFIG} 不存在`);
+    process.exit(1);
+  }
+
+  try {
+    const result = fs.readFileSync(filePath, 'utf-8');
+
+    return JSON.parse(result);
+  } catch(e) {
+    Logger.error(e);
+    process.exit(1);
+  }
 };
 
 class Package {
   constructor(pkgName, cacheRoot) {
     this.cacheRoot = cacheRoot;
-    this.pkgName = INTERNAL_COMMAND[pkgName] || pkgName;
-    this.pkgVersion = pkg.version;
+
+    const { INTERNAL_COMMAND_PKG = {}, INTERNAL_TEMPLATE_PKG = {} }
+      = readFufConfig(path.join(this.cacheRoot, `${Constant.FUF_CONFIG}`));
+
+    const pkgInfo = INTERNAL_COMMAND_PKG[pkgName] || INTERNAL_TEMPLATE_PKG[pkgName];
+
+    this.pkgName = pkgInfo.pkgName;
+    this.pkgVersion = pkgInfo.version;
   }
 
   pkgPath(version, name) {

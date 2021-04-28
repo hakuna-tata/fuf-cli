@@ -1,13 +1,13 @@
 const os = require('os');
 const checkNodeVersion = require('./prepare/checkNodeVersion');
 const checkPkgVersion = require('./prepare/checkPkgVersion');
-const initEnv = require('./prepare/initEnv');
+const initConfig = require('./prepare/initConfig');
 const Command = require('./command');
 
 const prepare = () => {
   checkNodeVersion(process.version);
   checkPkgVersion();
-  initEnv(os.homedir());
+  initConfig(os.homedir());
 };
 
 function cli() {

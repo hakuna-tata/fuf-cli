@@ -1,16 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// 保证文件一定存在，文件不存在则创建文件
-const fileExist = (filePath) => {
-  try {
-    fs.readFileSync(filePath, 'utf-8');
-  } catch (_) {
-    fs.appendFileSync(filePath, '', 'utf-8');
-  }
-};
-
-
 // 判断 File 存在且是 Folder
 const isDirExist = (filePath) => {
   try {
@@ -39,7 +29,6 @@ const formatFilePath = (filePath) => {
 };
 
 module.exports = {
-  fileExist,
   isDirExist,
   parseEntryFile,
   formatFilePath

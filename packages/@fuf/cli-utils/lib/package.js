@@ -18,21 +18,38 @@ const readFufConfig = (filePath) => {
   try {
     const result = fs.readFileSync(filePath, 'utf-8');
 
-    return JSON.parse(result);
+    return result ? JSON.parse(result) : {};
   } catch(e) {
     Logger.error(e);
     process.exit(1);
   }
 };
 
+const updateFufConfig = (filePath, cmdName, latestVersion) => {
+  const originData = readFufConfig(filePath);
+  const { INTERNAL_COMMAND_PKG = {}, INTERNAL_TEMPLATE_PKG = {} } = originData;
+
+  const pkgInfo = INTERNAL_COMMAND_PKG[cmdName] || INTERNAL_TEMPLATE_PKG[cmdName];
+  pkgInfo.version = latestVersion;
+
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(originData), 'utf-8');
+    Logger.log('success: 配置更新成功');
+  } catch(_) {
+    Logger.error('配置更新失败');
+    process.exit(1);
+  }
+};
+
 class Package {
-  constructor(pkgName, cacheRoot) {
+  constructor(cmdName, cacheRoot) {
+    this.cmdName = cmdName;
     this.cacheRoot = cacheRoot;
 
     const { INTERNAL_COMMAND_PKG = {}, INTERNAL_TEMPLATE_PKG = {} }
       = readFufConfig(path.join(this.cacheRoot, `${Constant.FUF_CONFIG}`));
 
-    const pkgInfo = INTERNAL_COMMAND_PKG[pkgName] || INTERNAL_TEMPLATE_PKG[pkgName];
+    const pkgInfo = INTERNAL_COMMAND_PKG[cmdName] || INTERNAL_TEMPLATE_PKG[cmdName];
 
     this.pkgName = pkgInfo.pkgName;
     this.pkgVersion = pkgInfo.version;
@@ -59,20 +76,22 @@ class Package {
       if (res.status === 200) {
         return res.data['dist-tags'].latest;
       }
-    }).catch((err) => {
-      Logger.error(err);
+    }).catch(() => {
+      Logger.error(`npm 包地址：${url} 不存在`);
     });
   }
 
-  async checkPkg() {
-    if (this.isPkgExist(this.pkgVersion, this.pkgName)) {
-      await this.pkgUpdate();
-    } else {
-      await this.pkgInstall();
-    }
-  }
-
   async getPkgEntryPath() {
+    const latestVersion = await this.getPkgLatestVersion(`${NPM_URL}/${this.pkgName}`);
+    if (latestVersion && semver.gt(latestVersion, this.pkgVersion)) {
+      this.pkgVersion = latestVersion;
+
+      updateFufConfig(path.join(this.cacheRoot, `${Constant.FUF_CONFIG}`),
+        this.cmdName,
+        latestVersion
+      );
+    }
+
     await this.checkPkg();
 
     try {
@@ -84,28 +103,9 @@ class Package {
     }
   }
 
-  async pkgUpdate() {
-    const latestVersion = await this.getPkgLatestVersion(`${NPM_URL}/${this.pkgName}`);
-
-    if (this.isPkgExist(latestVersion, this.pkgName)) {
-      this.pkgVersion = latestVersion;
-      return;
-    }
-
-    if (latestVersion && semver.gt(latestVersion, this.pkgVersion)) {
-      this.pkgVersion = latestVersion;
-      Logger.log('Success：命令插件自动更新');
-
-      return npminstall({
-        root: this.cacheRoot,
-        pkgs: [{
-          name: this.pkgName,
-          version: latestVersion
-        }]
-      }).catch((err) => {
-        Logger.error(err);
-        process.exit(1);
-      });
+  async checkPkg() {
+    if (!this.isPkgExist(this.pkgVersion, this.pkgName)) {
+      await this.pkgInstall();
     }
   }
 
@@ -116,8 +116,7 @@ class Package {
         name: this.pkgName,
         version: this.pkgVersion
       }]
-    }).catch((err) => {
-      Logger.error(err);
+    }).catch(() => {
       process.exit(1);
     });
   }

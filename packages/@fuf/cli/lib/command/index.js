@@ -34,7 +34,7 @@ const actions = async (opts, cmd, name) => {
 
 
   if (fs.existsSync(entryFile)) {
-    // Logger.log(`${entryFile}`);
+    // Logger.log(`入口文件：${entryFile}`);
     const formatPath = File.formatFilePath(entryFile);
     const config = Object.assign(opts, { name });
     const code = `require('${formatPath}')(${JSON.stringify(config)})`;

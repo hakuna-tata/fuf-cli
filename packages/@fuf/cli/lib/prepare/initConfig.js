@@ -23,13 +23,13 @@ const initConfig = (homePath) => {
   checkFufDir(homePath);
   const fufConfigFile = path.join(homePath, `${Constant.FUF_ROOT}/${Constant.FUF_CONFIG}`);
   if (!fs.existsSync(fufConfigFile)) {
-    fs.writeFile(fufConfigFile, JSON.stringify(Config), (err) => {
-      if (err) {
-        Logger.error('配置初始化失败');
-        process.exit(1);
-      }
+    try {
+      fs.writeFileSync(fufConfigFile, JSON.stringify(Config), 'utf-8');
       Logger.log('success: 配置初始化成功');
-    });
+    } catch(_) {
+      Logger.error('配置初始化失败');
+      process.exit(1);
+    }
   }
 };
 

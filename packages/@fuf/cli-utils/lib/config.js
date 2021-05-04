@@ -14,14 +14,22 @@ module.exports = {
     vue2: {
       pkgName: '@fuf/cli-template-vue2',
       version: '1.0.1',
+      desc: 'Vue2 模板',
     },
     vue3: {
       pkgName: '@fuf/cli-template-vue3',
       version: '1.0.1',
+      desc: 'Vue3 模板',
     },
     node: {
       pkgName: '@fuf/cli-template-node',
       version: '1.0.1',
+      desc: 'Node 模板',
+    },
+    react: {
+      pkgName: '@fuf/cli-template-react',
+      version: '1.0.1',
+      desc: 'React 模板 (正在开发中......)',
     }
   },
 };

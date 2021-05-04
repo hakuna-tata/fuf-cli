@@ -1,24 +1,26 @@
 const path = require('path');
+const fs = require('fs');
 const os = require('os');
 const fse = require('fs-extra');
 const inquirer = require('inquirer');
 const { Constant, File, Logger, Package } = require('@fuf/cli-utils');
 const Hook = require('./hook');
 
-const EXIST_TPL = [
-  {
-    value: '@fuf/cli-template-vue2',
-    name: 'Vue2 模板',
-  },
-  {
-    value: '@fuf/cli-template-node',
-    name: 'Node 模板',
-  },
-  {
-    value: '@fuf/cli-template-react',
-    name: 'React 模板 (正在开发中......)',
+const readFufConfig = (filePath) => {
+  if(!fs.existsSync(filePath)) {
+    Logger.error(`配置文件 ${Constant.FUF_CONFIG} 不存在`);
+    process.exit(1);
   }
-];
+
+  try {
+    const result = fs.readFileSync(filePath, 'utf-8');
+
+    return result ? JSON.parse(result) : {};
+  } catch(e) {
+    Logger.error(e);
+    process.exit(1);
+  }
+};
 
 const SUPPORT_LANG = [
   {
@@ -34,6 +36,7 @@ const SUPPORT_LANG = [
 class createCommand extends Hook {
   init(options) {
     this.cacheRoot = path.join(os.homedir(), Constant.FUF_ROOT);
+    this.fufConfig = readFufConfig(path.join(this.cacheRoot, `${Constant.FUF_CONFIG}`));
 
     const { name = '', force = false } = options;
     this.projectName = name;
@@ -53,12 +56,12 @@ class createCommand extends Hook {
 
     if(isDirExist) {
       if (this.force === true) {
-        fse.emptyDirSync(path.join(currentPath, this.projectName));
+        fse.removeSync(path.join(currentPath, this.projectName));
       } else {
         const result = await inquirer.prompt({
           type: 'confirm',
           name: 'clear',
-          message: `是否清空 ${this.projectName} 文件`,
+          message: `是否清空 ${this.projectName} 文件夹`,
           default: false,
         });
 
@@ -66,13 +69,24 @@ class createCommand extends Hook {
         fse.emptyDirSync(path.join(currentPath, this.projectName));
       }
     } else {
-      fse.mkdirpSync(path.join(currentPath, this.projectName));
+      // 如果是文件则先删除
+      fse.removeSync(path.join(currentPath, this.projectName));
     }
 
     this.next();
   }
 
   async choiceTemplate() {
+    const EXIST_TPL = [];
+    const { INTERNAL_TEMPLATE_PKG = {} } = this.fufConfig;
+
+    Object.entries(INTERNAL_TEMPLATE_PKG).forEach(([key, value], index) => {
+      EXIST_TPL[index] = {
+        value: key,
+        name: value.desc
+      };
+    });
+
     const { template } = await inquirer.prompt({
       type: 'list',
       name: 'template',
@@ -94,6 +108,7 @@ class createCommand extends Hook {
 
   async downLoadTemplate(choices) {
     const { template } = choices;
+
     if (File.isDirExist(this.cacheRoot)) {
       const pkgInstance = new Package(template, this.cacheRoot);
 
@@ -106,9 +121,7 @@ class createCommand extends Hook {
     }
   }
 
-  copyTemplat2CurDir() {
-    console.log('copy');
-  }
+  copyTemplat2CurDir() {}
 
 }
 

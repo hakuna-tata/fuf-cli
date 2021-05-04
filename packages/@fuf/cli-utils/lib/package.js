@@ -71,27 +71,7 @@ class Package {
     return fs.existsSync(this.pkgPath(version, name));
   }
 
-  async getPkgLatestVersion(url) {
-    return axios.get(url).then((res) => {
-      if (res.status === 200) {
-        return res.data['dist-tags'].latest;
-      }
-    }).catch(() => {
-      Logger.error(`npm 包地址：${url} 不存在`);
-    });
-  }
-
   async getPkgEntryPath() {
-    const latestVersion = await this.getPkgLatestVersion(`${NPM_URL}/${this.pkgName}`);
-    if (latestVersion && semver.gt(latestVersion, this.pkgVersion)) {
-      this.pkgVersion = latestVersion;
-
-      updateFufConfig(path.join(this.cacheRoot, `${Constant.FUF_CONFIG}`),
-        this.cmdName,
-        latestVersion
-      );
-    }
-
     await this.checkPkg();
 
     try {
@@ -104,9 +84,28 @@ class Package {
   }
 
   async checkPkg() {
+    const latestVersion = await this.getPkgLatestVersion(`${NPM_URL}/${this.pkgName}`);
+    if (latestVersion && semver.gt(latestVersion, this.pkgVersion)) {
+      this.pkgVersion = latestVersion;
+
+      updateFufConfig(path.join(this.cacheRoot, `${Constant.FUF_CONFIG}`),
+        this.cmdName,
+        latestVersion
+      );
+    }
     if (!this.isPkgExist(this.pkgVersion, this.pkgName)) {
       await this.pkgInstall();
     }
+  }
+
+  async getPkgLatestVersion(url) {
+    return axios.get(url).then((res) => {
+      if (res.status === 200) {
+        return res.data['dist-tags'].latest;
+      }
+    }).catch(() => {
+      Logger.error(`npm 包地址：${url} 不存在`);
+    });
   }
 
   async pkgInstall() {

@@ -1,6 +1,6 @@
 {
   "name": "@fuf/cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Command line interface for fuf-cli development",
   "bin": {
     "fuf": "bin/fuf"

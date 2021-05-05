@@ -1,6 +1,6 @@
 {
   "name": "@fuf/cli-create-command",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "create command for fuf-cli packages",
   "keywords": [
     "command",

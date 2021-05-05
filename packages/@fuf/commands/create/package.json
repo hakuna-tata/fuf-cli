@@ -25,8 +25,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@fuf/cli-utils": "file:../../cli-utils",
+    "@fuf/cli-utils": "^1.0.2",
     "fs-extra": "^9.1.0",
     "inquirer": "^8.0.0"
-  }
+  },
+  "gitHead": "1823bc047b275b33ce8992f7accaa7112b55d985"
 }

@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@fuf/cli-utils": "file:../cli-utils",
+    "@fuf/cli-utils": "^1.0.2",
     "chalk": "^4.1.0",
     "commander": "^7.2.0",
     "dotenv": "^8.2.0",
@@ -39,5 +39,6 @@
   },
   "engines": {
     "node": ">=8.0"
-  }
+  },
+  "gitHead": "1823bc047b275b33ce8992f7accaa7112b55d985"
 }

@@ -1,22 +1,26 @@
 {
-  "name": "@fuf/cli-add-command",
+  "name": "@fuf/cli-template-node",
   "version": "1.0.1",
-  "description": "add command for fuf-cli package",
+  "description": "node template of fuf-cli",
   "keywords": [
-    "add",
+    "fuf",
     "cli",
-    "fuf"
+    "template"
   ],
   "author": "hakuna-tata <610578197@qq.com>",
   "homepage": "https://github.com/hakuna-tata/fuf-cli#readme",
   "license": "MIT",
-  "main": "lib/index.js",
-  "files": [
-    "lib"
-  ],
+  "main": "index.js",
+  "files": [],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hakuna-tata/fuf-cli.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/hakuna-tata/fuf-cli/issues"

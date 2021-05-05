@@ -1,0 +1,2 @@
+# @fuf/cli-template-node
+

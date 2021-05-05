@@ -5,6 +5,10 @@ const spinner = ora();
 
 module.exports = (type, text) => {
     switch(type) {
+        case 'stop':
+            spinner.stop();
+            return;
+
         case 'succeed':
             text = chalk.green(text);
             break;

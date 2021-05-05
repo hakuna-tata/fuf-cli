@@ -85,7 +85,9 @@ class Package {
   }
 
   async checkPkg() {
+    Spinner('start', `正在检查安装 ${this.pkgName} 最新版本`);
     const latestVersion = await this.getPkgLatestVersion(`${NPM_URL}/${this.pkgName}`);
+
     if (latestVersion && semver.gt(latestVersion, this.pkgVersion)) {
       this.pkgVersion = latestVersion;
       
@@ -94,8 +96,13 @@ class Package {
         latestVersion
       );
     }
+  
     if (!this.isPkgExist(this.pkgVersion, this.pkgName)) {
       await this.pkgInstall();
+      
+      Spinner('succeed', `${this.pkgName}@${this.pkgVersion} 安装成功`);
+    } else {
+      Spinner('succeed', `${this.pkgName} 已是最新版本`);
     }
   }
 
@@ -110,14 +117,13 @@ class Package {
   }
 
   async pkgInstall() {
+    Spinner('stop');
     return npminstall({
       root: this.cacheRoot,
       pkgs: [{
         name: this.pkgName,
         version: this.pkgVersion
       }]
-    }).then(() => {
-      Spinner('succeed', `${this.pkgName}@${this.pkgVersion} 安装成功`);
     }).catch(() => {
       Spinner('fail', `${this.pkgName}@${this.pkgVersion} 安装失败`);
       process.exit(1);

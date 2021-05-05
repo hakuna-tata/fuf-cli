@@ -1,6 +1,6 @@
 {
   "name": "@fuf/cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Command line interface for fuf-cli development",
   "bin": {
     "fuf": "bin/fuf"
@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@fuf/cli-utils": "^1.0.2",
+    "@fuf/cli-utils": "^1.0.3",
     "chalk": "^4.1.0",
     "commander": "^7.2.0",
     "dotenv": "^8.2.0",

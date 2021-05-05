@@ -1,6 +1,6 @@
 {
   "name": "@fuf/cli-create-command",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "create command for fuf-cli packages",
   "keywords": [
     "command",
@@ -25,7 +25,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@fuf/cli-utils": "^1.0.2",
+    "@fuf/cli-utils": "^1.0.3",
     "fs-extra": "^9.1.0",
     "inquirer": "^8.0.0"
   },

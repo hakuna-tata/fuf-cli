@@ -3,9 +3,9 @@ const fs = require('fs');
 const os = require('os');
 const { spawn } = require('child_process');
 const figlet = require('figlet');
-const chalk = require('chalk');
 const program = require('commander');
-const { Constant, File, Logger, Package } = require('@fuf/cli-utils');
+const chalk = require('chalk');
+const { Constant, File, Spinner, Package } = require('@fuf/cli-utils');
 const pkg = require('../../package.json');
 
 const NO_COMMAND_ARGS_LENGTH = 2;
@@ -19,7 +19,7 @@ const actions = async (opts, cmd, name) => {
     if (File.isDirExist(debugPath)) {
       entryFile = path.join(debugPath, File.parseEntryFile(debugPath));
     } else {
-      Logger.error(`${debugPath} is not exist`);
+      Spinner('fail', `命令行工具 ${debugPath} 不存在`);
       process.exit(1);
     }
   } else {
@@ -27,14 +27,13 @@ const actions = async (opts, cmd, name) => {
       const pkgInstance = new Package(cmd.name(), cacheRoot);
       entryFile = await pkgInstance.getPkgEntryPath();
     } else {
-      Logger.error(`${cacheRoot} is not exist`);
+      Spinner('fail', `缓存目录 ${cacheRoot} 不存在`);
       process.exit(1);
     }
   }
 
 
   if (fs.existsSync(entryFile)) {
-    // Logger.log(`入口文件：${entryFile}`);
     const formatPath = File.formatFilePath(entryFile);
     const config = Object.assign(opts, { name });
     const code = `require('${formatPath}')(${JSON.stringify(config)})`;
@@ -44,17 +43,17 @@ const actions = async (opts, cmd, name) => {
     });
 
     cp.on('error', (e) => {
-      Logger.error(`${e.message}`);
+      Spinner('fail', `${e.message}`);
       process.exit(1);
     });
 
     cp.on('exit', (code) => {
-      Logger.log(`command invoke sunccess: ${code}`);
+      Spinner('succeed', `子进程 exit code: ${code}`);
       process.exit(code || 0);
     });
 
   } else {
-    Logger.error(`entryFile：${entryFile} is not exist`);
+    Spinner('fail', `入口文件 ${entryFile} 不存在`);
   }
 };
 
@@ -78,9 +77,9 @@ class Command {
       },
       function(err, data) {
         if (err) process.exit(1);
-        Logger.log(data);
-        Logger.log(`current version: v${pkg.version}, homepage: ${pkg.homepage}`);
-        Logger.log('Run fuf --help(-h) to see usage');
+        console.log(chalk.green(data));
+        console.log(chalk.green(`current version: v${pkg.version}, homepage: ${pkg.homepage}`));
+        console.log(chalk.green('Run fuf --help(-h) to see usage'));
       }
     );
   }
@@ -110,7 +109,7 @@ class Command {
 
     program.on('command:*', ([cmd]) => {
       program.outputHelp();
-      Logger.error(`Unknown command ${chalk.yellow(cmd)}`);
+      Spinner('fail', `fuf-cli 未知命令 ${cmd}`);
       process.exitCode = 1;
     });
 

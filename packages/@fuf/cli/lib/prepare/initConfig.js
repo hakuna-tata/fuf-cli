@@ -1,10 +1,10 @@
 const path = require('path');
 const fs = require('fs');
-const { Config, Constant, Logger } = require('@fuf/cli-utils');
+const { Config, Constant, Spinner } = require('@fuf/cli-utils');
 
 const checkFufDir = (homePath) => {
   if (!homePath) {
-    Logger.error('当前登录用户主目录不存在！');
+    Spinner('fail', '当前登录用户主目录不存在!');
     process.exit(1);
   }
   const root = path.join(homePath, `${Constant.FUF_ROOT}`);
@@ -25,9 +25,10 @@ const initConfig = (homePath) => {
   if (!fs.existsSync(fufConfigFile)) {
     try {
       fs.writeFileSync(fufConfigFile, JSON.stringify(Config), 'utf-8');
-      Logger.log('success: 配置初始化成功');
+
+      Spinner('succeed', '初始化配置成功');
     } catch(_) {
-      Logger.error('配置初始化失败');
+      Spinner('fail', '初始化配置失败');
       process.exit(1);
     }
   }

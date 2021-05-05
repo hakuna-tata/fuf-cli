@@ -4,14 +4,14 @@ const axios = require('axios');
 const npminstall = require('npminstall');
 const semver = require('semver');
 const File = require('./file');
-const Logger = require('./logger');
+const Spinner = require('./spinner');
 const Constant = require('./constant');
 
 const NPM_URL = 'https://registry.npmjs.org';
 
 const readFufConfig = (filePath) => {
   if(!fs.existsSync(filePath)) {
-    Logger.error(`配置文件 ${Constant.FUF_CONFIG} 不存在`);
+    Spinner('fail', `配置文件 ${Constant.FUF_CONFIG} 不存在`);
     process.exit(1);
   }
 
@@ -20,7 +20,7 @@ const readFufConfig = (filePath) => {
 
     return result ? JSON.parse(result) : {};
   } catch(e) {
-    Logger.error(e);
+    Spinner('fail', e);
     process.exit(1);
   }
 };
@@ -34,9 +34,10 @@ const updateFufConfig = (filePath, cmdName, latestVersion) => {
 
   try {
     fs.writeFileSync(filePath, JSON.stringify(originData), 'utf-8');
-    Logger.log('success: 配置更新成功');
+  
+    Spinner('succeed', '配置更新成功');
   } catch(_) {
-    Logger.error('配置更新失败');
+    Spinner('fail', '配置更新失败');
     process.exit(1);
   }
 };
@@ -87,7 +88,7 @@ class Package {
     const latestVersion = await this.getPkgLatestVersion(`${NPM_URL}/${this.pkgName}`);
     if (latestVersion && semver.gt(latestVersion, this.pkgVersion)) {
       this.pkgVersion = latestVersion;
-
+      
       updateFufConfig(path.join(this.cacheRoot, `${Constant.FUF_CONFIG}`),
         this.cmdName,
         latestVersion
@@ -104,7 +105,7 @@ class Package {
         return res.data['dist-tags'].latest;
       }
     }).catch(() => {
-      Logger.error(`npm 包地址：${url} 不存在`);
+      Spinner('fail', `npm 包地址: ${url} 不存在`);
     });
   }
 
@@ -115,7 +116,10 @@ class Package {
         name: this.pkgName,
         version: this.pkgVersion
       }]
+    }).then(() => {
+      Spinner('succeed', `${this.pkgName}@${this.pkgVersion} 安装成功`);
     }).catch(() => {
+      Spinner('fail', `${this.pkgName}@${this.pkgVersion} 安装失败`);
       process.exit(1);
     });
   }

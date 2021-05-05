@@ -3,12 +3,12 @@ const fs = require('fs');
 const os = require('os');
 const fse = require('fs-extra');
 const inquirer = require('inquirer');
-const { Constant, File, Logger, Package } = require('@fuf/cli-utils');
+const { Constant, File, Spinner, Package } = require('@fuf/cli-utils');
 const Hook = require('./hook');
 
 const readFufConfig = (filePath) => {
   if(!fs.existsSync(filePath)) {
-    Logger.error(`配置文件 ${Constant.FUF_CONFIG} 不存在`);
+    Spinner('fail', `配置文件 ${Constant.FUF_CONFIG} 不存在`);
     process.exit(1);
   }
 
@@ -17,7 +17,7 @@ const readFufConfig = (filePath) => {
 
     return result ? JSON.parse(result) : {};
   } catch(e) {
-    Logger.error(e);
+    Spinner('fail', e);
     process.exit(1);
   }
 };
@@ -116,7 +116,7 @@ class createCommand extends Hook {
 
       this.next();
     } else {
-      Logger.error(`${this.cacheRoot} is not exist`);
+      Spinner('fail', `缓存目录 ${this.cacheRoot} 不存在`);
       process.exit(1);
     }
   }

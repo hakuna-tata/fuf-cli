@@ -1,6 +1,6 @@
 {
   "packages": [
-    "packages/@fuf/*",
+    "packages/@fuf/cli*",
     "packages/@fuf/commands/*"
   ],
   "version": "1.0.1"

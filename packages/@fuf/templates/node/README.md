@@ -1,2 +1,2 @@
-# @fuf/cli-template-node
+# fuf-cli
 

@@ -1,6 +1,6 @@
 {
   "name": "@fuf/cli-utils",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "utils for fuf-cli packages",
   "keywords": [
     "fuf",

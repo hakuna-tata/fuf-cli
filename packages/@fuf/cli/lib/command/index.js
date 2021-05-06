@@ -48,7 +48,6 @@ const actions = async (opts, cmd, name) => {
     });
 
     cp.on('exit', (code) => {
-      Spinner('succeed', `子进程 exit code: ${code}`);
       process.exit(code || 0);
     });
 

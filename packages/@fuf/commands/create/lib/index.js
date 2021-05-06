@@ -114,14 +114,27 @@ class createCommand extends Hook {
 
       await pkgInstance.checkPkg();
 
-      this.next();
+      const sourcePath = pkgInstance.pkgPath();
+      const targetPath = path.join(process.cwd(), this.projectName);
+
+      this.next({ sourcePath, targetPath });
     } else {
       Spinner('fail', `缓存目录 ${this.cacheRoot} 不存在`);
       process.exit(1);
     }
   }
 
-  copyTemplat2CurDir() {}
+  copyTemplat2CurDir(pathInfo) {
+    const { sourcePath, targetPath } = pathInfo;
+
+    Spinner('start', `正在创建 ${this.projectName} 项目`);
+
+    fse.ensureDirSync(targetPath);
+    fse.copySync(sourcePath, targetPath);
+
+    Spinner('stop');
+    Spinner('succeed', `${this.projectName} 项目已完成创建`);
+  }
 
 }
 

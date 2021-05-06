@@ -56,9 +56,9 @@ class Package {
     this.pkgVersion = pkgInfo.version;
   }
 
-  pkgPath(version, name) {
+  pkgPath() {
     return path.join(this.cacheRoot, 'node_modules',
-      this.prefixPkgName(version, name)
+      this.prefixPkgName(this.pkgVersion, this.pkgName)
     );
   }
 
@@ -76,7 +76,7 @@ class Package {
     await this.checkPkg();
 
     try {
-      const calcPkgPath = this.pkgPath(this.pkgVersion, this.pkgName);
+      const calcPkgPath = this.pkgPath();
 
       return path.join(calcPkgPath, File.parseEntryFile(calcPkgPath));
     } catch(_) {

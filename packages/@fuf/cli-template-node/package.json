@@ -11,16 +11,16 @@
   "homepage": "https://github.com/hakuna-tata/fuf-cli#readme",
   "license": "MIT",
   "files": [
-    "src"
+    "template"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hakuna-tata/fuf-cli.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/hakuna-tata/fuf-cli/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

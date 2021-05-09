@@ -1,7 +1,7 @@
 {
-  "name": "@fuf/cli-template-vue2",
+  "name": "@fuf/cli-template-vue3",
   "version": "1.0.0",
-  "description": "vue2 template of fuf cli",
+  "description": "vue3 template of fuf cli",
   "keywords": [
     "fuf",
     "cli",

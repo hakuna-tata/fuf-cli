@@ -13,12 +13,12 @@ module.exports = {
   INTERNAL_TEMPLATE_PKG: {
     vue2: {
       pkgName: '@fuf/cli-template-vue2',
-      version: '1.0.4',
+      version: '1.0.0',
       desc: 'Vue2 模板',
     },
     vue3: {
       pkgName: '@fuf/cli-template-vue3',
-      version: '1.0.4',
+      version: '1.0.0',
       desc: 'Vue3 模板',
     },
     node: {
@@ -26,10 +26,5 @@ module.exports = {
       version: '1.0.4',
       desc: 'Node 模板',
     },
-    react: {
-      pkgName: '@fuf/cli-template-react',
-      version: '1.0.4',
-      desc: 'React 模板 (正在开发中......)',
-    }
   },
 };

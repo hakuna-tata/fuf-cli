@@ -1,11 +1,12 @@
 {
-  "name": "fuf-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "server": "node ./server/app.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.13.1",
+    "mongoose": "^5.13.5"
+  },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",

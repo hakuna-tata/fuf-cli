@@ -35,10 +35,17 @@ class DB {
     return new Promise((resolve, reject) => {
         this.connect().then(db => {
             const result = db.collection(colName).find({});
+
             result.toArray((err,data) => {
               if(err) reject(err);
 
-              resolve(data);
+              const removedIdData = data.map((item) => {
+                delete item._id;
+
+                return item;
+              });
+
+              resolve(removedIdData);
             });
         });
     });

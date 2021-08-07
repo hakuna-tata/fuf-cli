@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "install": "lerna bootstrap",
     "server": "node ./server/app.js"
   },
   "license": "MIT",

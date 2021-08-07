@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const { Config, Constant, Spinner } = require('@fuf/cli-utils');
+const { getCommandConfig, getTemplateConfig } = require('../api/getConfig');
+const { Constant, Spinner } = require('@fuf/cli-utils');
 
 const checkFufDir = (homePath) => {
   if (!homePath) {
@@ -19,12 +20,18 @@ const checkFufDir = (homePath) => {
   }
 };
 
-const initConfig = (homePath) => {
+const initConfig = async (homePath) => {
   checkFufDir(homePath);
+
   const fufConfigFile = path.join(homePath, `${Constant.FUF_ROOT}/${Constant.FUF_CONFIG}`);
   if (!fs.existsSync(fufConfigFile)) {
+    const [command, template] = await Promise.all([getCommandConfig(), getTemplateConfig()]);
     try {
-      fs.writeFileSync(fufConfigFile, JSON.stringify(Config), 'utf-8');
+      fs.writeFileSync(
+        fufConfigFile,
+        JSON.stringify(Object.assign({}, command, template)),
+        'utf-8'
+      );
 
       Spinner('succeed', '初始化配置成功');
     } catch(_) {

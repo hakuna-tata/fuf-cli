@@ -31,24 +31,10 @@ class DB {
     });
   }
 
-  find(colName){
-    return new Promise((resolve, reject) => {
-        this.connect().then(db => {
-            const result = db.collection(colName).find({});
+  async find(colName){
+    const list = await this.db.collection(colName).find({}).project({ _id: 0 }).toArray();
 
-            result.toArray((err,data) => {
-              if(err) reject(err);
-
-              const removedIdData = data.map((item) => {
-                delete item._id;
-
-                return item;
-              });
-
-              resolve(removedIdData);
-            });
-        });
-    });
+    return list;
   }
 
 }
